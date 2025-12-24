@@ -13,11 +13,17 @@ spring:
   # Configurazione Kafka
   kafka:
     bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: notification-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
-        spring.json.value.default.type: com.diaia.notification_service.model.dto.AppointmentDTO # Modifica con il tuo package reale
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      # Nota: qui non ci sono le 'properties' generiche, usiamo quelle specifiche del deserializzatore
+    properties:
+      spring.json.trusted.packages: "*"
+      spring.json.use.type.headers: false
+      spring.json.value.default.type: java.util.Map
+      spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
