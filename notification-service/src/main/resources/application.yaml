@@ -1,10 +1,16 @@
 server:
   port: 8082
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true # Consigliato per Docker e ambienti locali
+
 spring:
   application:
     name: notification-service
-
   # Configurazione MongoDB
   data:
     mongodb:
