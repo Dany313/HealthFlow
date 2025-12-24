@@ -18,10 +18,21 @@ spring:
           uri: lb://BOOKING-SERVICE # Usa il nome scritto nel pom/yml del booking
           predicates:
             - Path=/api/v1/appointments/**
-          filters:
-            - JwtAuthenticationFilter
 
         - id: notification-route
           uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/api/notifications/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # L'issuer è sempre in questo formato per Firebase
+          issuer-uri: https://securetoken.google.com/healthflow-1e02a
+          # Questo URL serve al Gateway per scaricare le chiavi pubbliche di Google
+          jwk-set-uri: https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.gateway: DEBUG

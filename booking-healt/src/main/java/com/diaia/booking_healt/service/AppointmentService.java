@@ -10,6 +10,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +42,13 @@ public class AppointmentService {
         dto.setId(entity.getId());
         dto.setStatus(entity.getStatus());
         return dto;
+    }
+
+    public Optional<Appointment> getById(UUID id) {
+        return repository.findById(id);
+    }
+
+    public List<Appointment> getByUserId(String UserId) {
+        return repository.findByUserId(UserId);
     }
 }
